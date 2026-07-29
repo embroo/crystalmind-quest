@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CONTENT } from './config/content';
 import { Crystal3DCanvas } from './components/Crystal3DCanvas';
-import { WallpaperExporter } from './components/WallpaperExporter';
 import { solfeggioAudio } from './lib/solfeggioAudio';
 import { generateSecretAffirmation, AffirmationResult } from './lib/geminiAffirmation';
 import PayPalCheckoutButton from './components/payment/PayPalCheckoutButton';
@@ -11,11 +10,11 @@ import { EBookModal } from './components/EBookModal';
 import { useAuth } from './contexts/AuthContext';
 import { createOrder } from './lib/firestore';
 import { PRODUCTS } from './lib/paypal';
-import { Sparkles, Globe, Volume2, VolumeX, Smartphone, CheckCircle, Zap, User, BookOpen, Image } from 'lucide-react';
+import { Sparkles, Volume2, VolumeX, Smartphone, CheckCircle, Zap, User, BookOpen, Download, Image } from 'lucide-react';
 
 export default function App() {
-  const [lang, setLang] = useState<'en' | 'kr'>('en');
-  const content = CONTENT[lang];
+  const lang = 'en';
+  const content = CONTENT['en'];
 
   // Auth State
   const { user, signOut } = useAuth();
@@ -60,9 +59,7 @@ export default function App() {
       });
     } else {
       alert(
-        lang === 'kr'
-          ? '📱 아이폰(iOS)에서는 Safari 하단 공유 버튼 ➔ "홈 화면에 추가"를 눌러주세요.\n안드로이드(Android)에서는 Chrome 우측 메뉴 ➔ "앱 설치" 또는 "홈 화면에 추가"를 누르시면 1초 만에 앱 아이콘이 깔립니다!'
-          : '📱 On iOS, tap the Share button in Safari and select "Add to Home Screen".\nOn Android, tap the Chrome menu and select "Install app" or "Add to Home Screen".'
+        '📱 On iOS, tap the Share button in Safari and select "Add to Home Screen".\nOn Android, tap the Chrome menu and select "Install app" or "Add to Home Screen".'
       );
     }
   };
@@ -102,7 +99,6 @@ export default function App() {
 
   // Intuitive Frequency Card Click Callback:
   // If the user clicks the ALREADY SELECTED frequency card while audio is playing, toggle it OFF!
-  // Otherwise, select & play the new frequency.
   const handleSelectFrequency = (freqId: string, freqHzStr: string) => {
     if (selectedFreqId === freqId && isAudioPlaying) {
       solfeggioAudio.stopFrequency();
@@ -127,7 +123,7 @@ export default function App() {
     solfeggioAudio.startFrequency(freqHz, 0.18);
     setIsAudioPlaying(true);
 
-    const result = await generateSecretAffirmation(selectedFreqId, userWish, lang);
+    const result = await generateSecretAffirmation(selectedFreqId, userWish, 'en');
     setAffirmationResult(result);
     setIsTuning(false);
 
@@ -174,22 +170,14 @@ export default function App() {
           status: 'completed',
           paypalOrderId: orderId,
         });
-        alert(
-          lang === 'kr'
-            ? `✅ 결제가 성공적으로 완료되었습니다! 주문번호: ${orderId}\n전자책 리더기가 열립니다.`
-            : `✅ Payment completed successfully! Order: ${orderId}\nYour E-Book Reader is opening.`
-        );
+        alert(`✅ Payment completed successfully! Order: ${orderId}\nYour E-Book Reader is opening.`);
         setIsEBookModalOpen(true);
       } catch (err) {
-        alert(
-          lang === 'kr'
-            ? `결제 완료! Order: ${orderId}`
-            : `Payment completed. Order: ${orderId}`
-        );
+        alert(`Payment completed. Order: ${orderId}`);
         setIsEBookModalOpen(true);
       }
     },
-    [user, lang]
+    [user]
   );
 
   return (
@@ -222,21 +210,8 @@ export default function App() {
                 <VolumeX className="w-3.5 h-3.5" />
               )}
               <span className="hidden sm:inline">
-                {isAudioPlaying
-                  ? lang === 'kr'
-                    ? `🔊 ${selectedFreq.hz} 작동 중`
-                    : `🔊 ${selectedFreq.hz} Active`
-                  : content.hero.audioToggleOff}
+                {isAudioPlaying ? `🔊 ${selectedFreq.hz} Active` : content.hero.audioToggleOff}
               </span>
-            </button>
-
-            {/* Language Switcher */}
-            <button
-              onClick={() => setLang(lang === 'en' ? 'kr' : 'en')}
-              className="px-2.5 py-1.5 rounded-full text-xs font-medium bg-white/5 border border-white/10 hover:bg-white/10 flex items-center gap-1 text-slate-300"
-            >
-              <Globe className="w-3.5 h-3.5" />
-              <span>{lang === 'en' ? 'EN' : 'KR'}</span>
             </button>
 
             {/* Auth Button */}
@@ -364,13 +339,7 @@ export default function App() {
                   <h3 className="font-bold text-base text-white mb-1">{freq.name}</h3>
                   <p className="text-xs text-slate-300 leading-normal">{freq.desc}</p>
                   <p className="text-[10px] text-amber-300/70 mt-2 italic">
-                    {isThisPlaying
-                      ? lang === 'kr'
-                        ? '💡 다시 누르면 소리가 꺼집니다'
-                        : '💡 Tap again to turn sound off'
-                      : lang === 'kr'
-                      ? '▶ 터치하면 소리가 켜집니다'
-                      : '▶ Tap to play frequency sound'}
+                    {isThisPlaying ? '💡 Tap again to turn sound off' : '▶ Tap to play frequency sound'}
                   </p>
                 </button>
               );
@@ -405,7 +374,7 @@ export default function App() {
             </button>
           </div>
 
-          {/* ── Generated Affirmation Card ── */}
+          {/* ── Generated Affirmation Card & Live Lockscreen Exporter ── */}
           <AnimatePresence>
             {affirmationResult && (
               <motion.div
@@ -455,12 +424,48 @@ export default function App() {
 
                 {/* Action Buttons (Wallpaper + PWA) */}
                 <div className="space-y-3">
-                  <WallpaperExporter
-                    affirmation={affirmationResult}
-                    crystalName={selectedFreq.crystalName}
-                    hzText={selectedFreq.hz}
-                    lang={lang}
-                  />
+                  <button
+                    onClick={() => {
+                      const canvas = document.createElement('canvas');
+                      canvas.width = 1080;
+                      canvas.height = 1920;
+                      const ctx = canvas.getContext('2d');
+                      if (ctx) {
+                        ctx.fillStyle = '#0a0a14';
+                        ctx.fillRect(0, 0, 1080, 1920);
+
+                        ctx.strokeStyle = '#ffd700';
+                        ctx.lineWidth = 4;
+                        ctx.strokeRect(540 - 120, 500 - 120, 240, 240);
+
+                        ctx.fillStyle = '#ffd700';
+                        ctx.font = 'bold 36px monospace';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(`🔮 ${selectedFreq.hz} • ${selectedFreq.crystalName}`, 540, 320);
+
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = 'italic 44px Georgia';
+                        ctx.fillText(`"${affirmationResult.affirmationText}"`, 540, 1100);
+
+                        ctx.fillStyle = '#94a3b8';
+                        ctx.font = '28px sans-serif';
+                        ctx.fillText(affirmationResult.rasTip, 540, 1220);
+
+                        ctx.fillStyle = '#64748b';
+                        ctx.font = 'bold 24px monospace';
+                        ctx.fillText('CrystalMind AI • 1080x1920 HD Lockscreen', 540, 1800);
+
+                        const link = document.createElement('a');
+                        link.download = `CrystalMind_HD_Wallpaper_${selectedFreq.hz}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                      }
+                    }}
+                    className="w-full py-3.5 px-6 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-black shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2"
+                  >
+                    <Download className="w-4 h-4 text-black" />
+                    Download 1080x1920 HD Lockscreen Wallpaper
+                  </button>
 
                   <button
                     onClick={handleInstallPWA}
@@ -470,58 +475,37 @@ export default function App() {
                     {content.affirmationCard.pwaInstallBtn}
                   </button>
                 </div>
+
+                {/* Live Wallpaper Preview Frame (Shows generated affirmation) */}
+                <div className="bg-black/60 border border-white/10 rounded-2xl p-4 text-center space-y-3 mt-4">
+                  <p className="text-xs text-amber-300 font-bold uppercase tracking-wider">
+                    📱 Live Generated HD Lockscreen Preview
+                  </p>
+                  <div className="max-w-[240px] mx-auto bg-gradient-to-b from-[#0a0a14] via-[#161224] to-[#050508] border-2 border-slate-700 rounded-[28px] p-3 text-center shadow-xl space-y-3 relative aspect-[9/18] flex flex-col justify-between">
+                    <div className="space-y-0.5 pt-1">
+                      <div className="w-12 h-3 bg-black/80 rounded-full mx-auto" />
+                      <p className="text-[10px] text-slate-400 font-mono">08:00</p>
+                      <p className="text-[9px] text-amber-400 font-bold uppercase">
+                        🔮 {selectedFreq.hz} • {selectedFreq.crystalName}
+                      </p>
+                    </div>
+                    <div className="my-auto">
+                      <div className="w-12 h-12 mx-auto border border-amber-400 rotate-45 flex items-center justify-center bg-amber-500/10">
+                        <Sparkles className="w-4 h-4 text-amber-300 -rotate-45" />
+                      </div>
+                    </div>
+                    <div className="bg-black/80 p-2 rounded-xl border border-white/10 text-left">
+                      <p className="text-[10px] font-serif text-amber-100 italic leading-snug">
+                        "{affirmationResult.affirmationText}"
+                      </p>
+                      <p className="text-[8px] text-slate-400 mt-1">{affirmationResult.rasTip}</p>
+                    </div>
+                    <p className="text-[8px] text-slate-500 pb-0.5">CrystalMind AI • 1080x1920 HD</p>
+                  </div>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* ── LIVE HD LOCKSCREEN WALLPAPER SAMPLE PREVIEW ── */}
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-6 space-y-4 backdrop-blur-md text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-bold uppercase">
-              <Image className="w-3.5 h-3.5" />
-              {lang === 'kr' ? '📱 HD 잠금화면 왈페이퍼 샘플 미리보기' : '📱 Live HD Lockscreen Wallpaper Sample'}
-            </div>
-
-            {/* Mobile Frame Preview Container */}
-            <div className="max-w-[280px] mx-auto bg-gradient-to-b from-[#0a0a14] via-[#161224] to-[#050508] border-4 border-slate-700/60 rounded-[36px] p-4 text-center shadow-2xl space-y-4 relative overflow-hidden aspect-[9/18] flex flex-col justify-between">
-              {/* Top Notch & Clock */}
-              <div className="space-y-1 pt-2">
-                <div className="w-16 h-4 bg-black/80 rounded-full mx-auto" />
-                <p className="text-xs text-slate-400 font-mono">08:00</p>
-                <p className="text-[10px] text-amber-400 font-bold tracking-widest uppercase">
-                  🔮 {selectedFreq.hz} • {selectedFreq.crystalName}
-                </p>
-              </div>
-
-              {/* Crystal Diamond Emblem */}
-              <div className="my-auto py-4">
-                <div className="w-16 h-16 mx-auto border-2 border-amber-400 rotate-45 flex items-center justify-center bg-amber-500/10 shadow-lg shadow-amber-500/20">
-                  <Sparkles className="w-6 h-6 text-amber-300 -rotate-45" />
-                </div>
-              </div>
-
-              {/* Sample Affirmation Text Box */}
-              <div className="bg-black/60 backdrop-blur-md p-3 rounded-2xl border border-white/10 space-y-1 text-left">
-                <p className="text-[11px] font-serif text-amber-100 italic leading-snug">
-                  {affirmationResult
-                    ? affirmationResult.affirmationText
-                    : lang === 'kr'
-                    ? '“내 뇌의 RAS 안테나는 부와 기회의 주파수를 선명하게 포착합니다.”'
-                    : '“My brain’s RAS antenna captures wealth & opportunity with crystal clarity.”'}
-                </p>
-                <p className="text-[9px] text-slate-400">
-                  {affirmationResult ? affirmationResult.rasTip : '🧠 RAS Neuroscience Lockscreen Visualization'}
-                </p>
-              </div>
-
-              {/* Bottom Watermark */}
-              <p className="text-[9px] text-slate-500 pb-1">CrystalMind AI • 1080x1920 HD</p>
-            </div>
-            <p className="text-xs text-slate-400">
-              {lang === 'kr'
-                ? '위 샘플처럼 유저의 목표와 주파수가 담긴 1080x1920 HD 배경화면이 자동 합성됩니다.'
-                : '1080x1920 HD wallpaper is automatically generated with user intention & frequency.'}
-            </p>
-          </div>
         </section>
 
         {/* ── SCREEN 3: Global PayPal Checkout ── */}
@@ -594,7 +578,7 @@ export default function App() {
                   className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 border border-white/20 text-slate-200 flex items-center justify-center gap-1.5 transition-all"
                 >
                   <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-                  {lang === 'kr' ? '📖 E-Book 전문 읽기 & 다운로드 (리더기)' : '📖 Read & Download Full E-Book'}
+                  📖 Read & Download Full E-Book Guide
                 </button>
               </div>
             </div>
