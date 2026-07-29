@@ -10,10 +10,9 @@ import { EBookModal } from './components/EBookModal';
 import { useAuth } from './contexts/AuthContext';
 import { createOrder } from './lib/firestore';
 import { PRODUCTS } from './lib/paypal';
-import { Sparkles, Volume2, VolumeX, Smartphone, CheckCircle, Zap, User, BookOpen, Download, Image } from 'lucide-react';
+import { Sparkles, Volume2, VolumeX, Smartphone, CheckCircle, Zap, User, BookOpen, Download } from 'lucide-react';
 
 export default function App() {
-  const lang = 'en';
   const content = CONTENT['en'];
 
   // Auth State
@@ -476,7 +475,7 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* Live Wallpaper Preview Frame (Shows generated affirmation) */}
+                {/* Live Wallpaper Preview Frame */}
                 <div className="bg-black/60 border border-white/10 rounded-2xl p-4 text-center space-y-3 mt-4">
                   <p className="text-xs text-amber-300 font-bold uppercase tracking-wider">
                     📱 Live Generated HD Lockscreen Preview
