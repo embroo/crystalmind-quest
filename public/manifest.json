@@ -4,19 +4,14 @@
   "description": "Rewire your Reticular Activating System (RAS) with 528Hz Solfeggio sound waves and 3D crystal resonance.",
   "icons": [
     {
-      "src": "/icon-192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "/icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "/crystalmind-icon-only.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
     }
   ],
   "start_url": "/",
   "background_color": "#0a0a14",
-  "theme_color": "#ffd700",
+  "theme_color": "#0a0a14",
   "display": "standalone",
   "orientation": "portrait"
 }

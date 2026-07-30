@@ -88,7 +88,7 @@ export default function App() {
     setIsAudioPlaying(newState);
   };
 
-  // 3D Crystal Touch Callback (Triggers Haptics & Ensures Sound is Active)
+  // 3D Crystal Touch Callback
   const handleCrystalTouch = () => {
     solfeggioAudio.triggerHaptic([30, 40, 30]);
     const freqHz = parseInt(selectedFreq.hz);
@@ -96,8 +96,7 @@ export default function App() {
     setIsAudioPlaying(true);
   };
 
-  // Intuitive Frequency Card Click Callback:
-  // If the user clicks the ALREADY SELECTED frequency card while audio is playing, toggle it OFF!
+  // Frequency Card Click Callback
   const handleSelectFrequency = (freqId: string, freqHzStr: string) => {
     if (selectedFreqId === freqId && isAudioPlaying) {
       solfeggioAudio.stopFrequency();
@@ -185,12 +184,11 @@ export default function App() {
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/40 border-b border-white/10 px-4 py-3">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-400 to-yellow-600 flex items-center justify-center shadow-md shadow-amber-500/20">
-              <Sparkles className="w-4 h-4 text-black" />
-            </div>
-            <span className="font-extrabold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-white to-amber-400">
-              {content.brandName}
-            </span>
+            <img
+              src="/crystalmind-logo-horizontal.svg"
+              alt="CrystalMind AI"
+              className="h-8 md:h-9 w-auto object-contain"
+            />
           </div>
 
           <div className="flex items-center gap-2.5">
@@ -489,9 +487,11 @@ export default function App() {
                       </p>
                     </div>
                     <div className="my-auto">
-                      <div className="w-12 h-12 mx-auto border border-amber-400 rotate-45 flex items-center justify-center bg-amber-500/10">
-                        <Sparkles className="w-4 h-4 text-amber-300 -rotate-45" />
-                      </div>
+                      <img
+                        src="/crystalmind-icon-only.svg"
+                        alt="CrystalMind Emblem"
+                        className="w-12 h-12 mx-auto drop-shadow-md"
+                      />
                     </div>
                     <div className="bg-black/80 p-2 rounded-xl border border-white/10 text-left">
                       <p className="text-[10px] font-serif text-amber-100 italic leading-snug">
@@ -586,7 +586,12 @@ export default function App() {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-white/10 py-8 px-4 text-center text-xs text-slate-500 space-y-2">
+      <footer className="border-t border-white/10 py-10 px-4 text-center text-xs text-slate-500 space-y-3">
+        <img
+          src="/crystalmind-logo-dark.svg"
+          alt="CrystalMind AI"
+          className="h-9 w-auto mx-auto mb-4 opacity-90 hover:opacity-100 transition-opacity"
+        />
         <p>{content.footer.rights}</p>
         <p>{content.footer.disclaimer}</p>
       </footer>

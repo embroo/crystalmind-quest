@@ -1,0 +1,26 @@
+<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gemGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D9B36A"/>
+      <stop offset="33%" stop-color="#D48B95"/>
+      <stop offset="66%" stop-color="#6E5A9E"/>
+      <stop offset="100%" stop-color="#5FA6A0"/>
+    </linearGradient>
+    <linearGradient id="facetLight2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <circle cx="120" cy="120" r="115" fill="#F7F5F1"/>
+  <g transform="translate(60, 30)">
+    <polygon points="60,0 120,55 95,180 25,180 0,55"
+             fill="url(#gemGrad2)" stroke="#3A3550" stroke-width="1.5" stroke-opacity="0.25"/>
+    <polyline points="60,0 60,55" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1.5" fill="none"/>
+    <polyline points="0,55 120,55" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="1.5" fill="none"/>
+    <polyline points="60,55 95,180" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+    <polyline points="60,55 25,180" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+    <polyline points="60,0 0,55" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1.5" fill="none"/>
+    <polyline points="60,0 120,55" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+    <polygon points="60,0 120,55 60,55 0,55" fill="url(#facetLight2)"/>
+  </g>
+</svg>

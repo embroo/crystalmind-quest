@@ -1,0 +1,32 @@
+<svg width="720" height="220" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gemGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E3C27F"/>
+      <stop offset="33%" stop-color="#E1A2AB"/>
+      <stop offset="66%" stop-color="#8A76C4"/>
+      <stop offset="100%" stop-color="#78C2BB"/>
+    </linearGradient>
+    <linearGradient id="facetLight3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="220" fill="#211E2E"/>
+  <g transform="translate(20, 20)">
+    <polygon points="90,0 160,55 130,180 50,180 20,55"
+             fill="url(#gemGrad3)" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.15"/>
+    <polyline points="90,0 90,55" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="1.5" fill="none"/>
+    <polyline points="20,55 160,55" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1.5" fill="none"/>
+    <polyline points="90,55 130,180" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+    <polyline points="90,55 50,180" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+    <polyline points="90,0 20,55" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="1.5" fill="none"/>
+    <polyline points="90,0 160,55" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="1.5" fill="none"/>
+    <polygon points="90,0 160,55 90,55 20,55" fill="url(#facetLight3)"/>
+  </g>
+  <text x="215" y="115" font-family="'Cormorant Garamond', 'Georgia', serif" font-size="64" fill="#F5F3EE">
+    Crystal<tspan font-weight="700" fill="#78C2BB">Mind</tspan>
+  </text>
+  <text x="217" y="150" font-family="'Cormorant Garamond', 'Georgia', serif" font-size="20" letter-spacing="4" fill="#B7B2C9">
+    F R E Q U E N C Y &#160; W E L L N E S S
+  </text>
+</svg>

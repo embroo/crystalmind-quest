@@ -1,0 +1,38 @@
+<svg width="720" height="220" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gemGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D9B36A"/>
+      <stop offset="33%" stop-color="#D48B95"/>
+      <stop offset="66%" stop-color="#6E5A9E"/>
+      <stop offset="100%" stop-color="#5FA6A0"/>
+    </linearGradient>
+    <linearGradient id="facetLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Crystal icon -->
+  <g transform="translate(20, 20)">
+    <!-- outer gem shape -->
+    <polygon points="90,0 160,55 130,180 50,180 20,55"
+             fill="url(#gemGrad)" stroke="#3A3550" stroke-width="1.5" stroke-opacity="0.25"/>
+    <!-- facet lines -->
+    <polyline points="90,0 90,55" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1.5" fill="none"/>
+    <polyline points="20,55 160,55" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="1.5" fill="none"/>
+    <polyline points="90,55 130,180" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+    <polyline points="90,55 50,180" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+    <polyline points="90,0 20,55" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1.5" fill="none"/>
+    <polyline points="90,0 160,55" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+    <!-- top facet highlight -->
+    <polygon points="90,0 160,55 90,55 20,55" fill="url(#facetLight)"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="215" y="115" font-family="'Cormorant Garamond', 'Georgia', serif" font-size="64" fill="#2E2B3D">
+    Crystal<tspan font-weight="700" fill="#5FA6A0">Mind</tspan>
+  </text>
+  <text x="217" y="150" font-family="'Cormorant Garamond', 'Georgia', serif" font-size="20" letter-spacing="4" fill="#8B85A1">
+    F R E Q U E N C Y &#160; W E L L N E S S
+  </text>
+</svg>
