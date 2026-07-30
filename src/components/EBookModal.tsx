@@ -1,19 +1,33 @@
-import React from 'react';
-import { X, BookOpen, Download, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, BookOpen, Download, Sparkles, Lock, ShieldCheck, CheckCircle } from 'lucide-react';
+import PayPalCheckoutButton from './payment/PayPalCheckoutButton';
+import { PRODUCTS } from '../lib/paypal';
 
 interface EBookModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isUnlocked?: boolean;
 }
 
-export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose }) => {
+export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnlocked: initialUnlocked = false }) => {
+  const [isUnlocked, setIsUnlocked] = useState(initialUnlocked);
+
   if (!isOpen) return null;
 
   const handleDownloadFile = () => {
+    if (!isUnlocked) {
+      alert('🔒 Please unlock the full E-Book guide ($19.99) to download the manuscript.');
+      return;
+    }
     const link = document.createElement('a');
     link.href = '/secret_20_neuroscience_manifestation_guide.md';
     link.download = 'secret_20_neuroscience_manifestation_guide.md';
     link.click();
+  };
+
+  const handlePaymentSuccess = () => {
+    setIsUnlocked(true);
+    alert('🎉 Thank you! The full Secret 2.0 Neuro-Guide is now unlocked!');
   };
 
   return (
@@ -28,13 +42,20 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose }) => {
             </h2>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              onClick={handleDownloadFile}
-              className="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/40 text-xs font-semibold flex items-center gap-1 transition-all"
-            >
-              <Download className="w-3.5 h-3.5" />
-              Download Guide (.md)
-            </button>
+            {isUnlocked ? (
+              <button
+                onClick={handleDownloadFile}
+                className="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/40 text-xs font-semibold flex items-center gap-1 transition-all"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Download Guide (.md)
+              </button>
+            ) : (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold">
+                <Lock className="w-3 h-3" />
+                Preview Mode
+              </span>
+            )}
             <button
               onClick={onClose}
               className="p-1.5 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-all"
@@ -44,7 +65,7 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Modal Body (100% Pure Global English Manuscript) */}
+        {/* Modal Body */}
         <div className="p-6 md:p-8 overflow-y-auto space-y-8 text-sm md:text-base leading-relaxed text-slate-300 select-text">
           {/* Title Banner */}
           <div className="text-center space-y-3 border-b border-amber-500/20 pb-6">
@@ -65,24 +86,43 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose }) => {
 
           {/* Note Before You Begin */}
           <div className="bg-amber-950/30 border border-amber-500/30 p-4 rounded-2xl text-xs text-amber-100/90 leading-relaxed">
-            <strong>📌 A Note Before You Begin:</strong> This guide is an educational and self-development resource. It draws on general, publicly understood concepts from neuroscience and psychology — attention filtering, stress physiology, and habit formation — and applies them to goal-setting and personal growth practices. It is not medical advice, is not a treatment for any condition, and is not a guarantee of any financial, health, or life outcome. Individual experiences vary. If you have a medical or mental health condition, please consult a licensed professional before beginning any new wellness practice.
+            <strong>📌 A Note Before You Begin:</strong> This guide is an educational and self-development resource. It draws on general, publicly understood concepts from neuroscience and psychology — attention filtering, stress physiology, and habit formation — and applies them to goal-setting and personal growth practices. It is not medical advice, is not a treatment for any condition, and is not a guarantee of any financial, health, or life outcome.
           </div>
 
           {/* Table of Contents */}
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-3">
-            <h3 className="font-bold text-amber-300 text-sm">📖 Table of Contents</h3>
+            <h3 className="font-bold text-amber-300 text-sm flex items-center justify-between">
+              <span>📖 Table of Contents</span>
+              {!isUnlocked && (
+                <span className="text-xs text-amber-400 font-normal">Prologue Free • Chapters 1-5 Locked</span>
+              )}
+            </h3>
             <ul className="text-xs md:text-sm space-y-1.5 text-slate-300 list-disc list-inside">
-              <li><strong>Prologue</strong>: Why Willpower Alone Wasn't Enough</li>
-              <li><strong>Chapter 1</strong>: Training Your Attention Filter</li>
-              <li><strong>Chapter 2</strong>: Feeling It in the Body, Not Just the Mind</li>
-              <li><strong>Chapter 3</strong>: Calming the Nervous System First</li>
-              <li><strong>Chapter 4</strong>: The One-Inch Action Principle</li>
-              <li><strong>Chapter 5</strong>: A Simple Daily Ritual</li>
-              <li><strong>Epilogue</strong>: What You Practice, You Become</li>
+              <li className="text-amber-200 font-semibold">
+                <strong>Prologue</strong>: Why Willpower Alone Wasn't Enough <span className="text-emerald-400 text-xs font-mono">(Free Preview)</span>
+              </li>
+              <li className={isUnlocked ? '' : 'opacity-60'}>
+                <strong>Chapter 1</strong>: Training Your Attention Filter {!isUnlocked && '🔒'}
+              </li>
+              <li className={isUnlocked ? '' : 'opacity-60'}>
+                <strong>Chapter 2</strong>: Feeling It in the Body, Not Just the Mind {!isUnlocked && '🔒'}
+              </li>
+              <li className={isUnlocked ? '' : 'opacity-60'}>
+                <strong>Chapter 3</strong>: Calming the Nervous System First {!isUnlocked && '🔒'}
+              </li>
+              <li className={isUnlocked ? '' : 'opacity-60'}>
+                <strong>Chapter 4</strong>: The One-Inch Action Principle {!isUnlocked && '🔒'}
+              </li>
+              <li className={isUnlocked ? '' : 'opacity-60'}>
+                <strong>Chapter 5</strong>: A Simple Daily Ritual {!isUnlocked && '🔒'}
+              </li>
+              <li className={isUnlocked ? '' : 'opacity-60'}>
+                <strong>Epilogue</strong>: What You Practice, You Become {!isUnlocked && '🔒'}
+              </li>
             </ul>
           </div>
 
-          {/* Section Prologue */}
+          {/* Section Prologue (ALWAYS FREE TO READ) */}
           <div className="space-y-3">
             <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
               🔮 Prologue: Why Willpower Alone Wasn't Enough
@@ -101,100 +141,137 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose }) => {
             </p>
           </div>
 
-          {/* Chapter 1 */}
-          <div className="space-y-3">
-            <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
-              🧠 Chapter 1: Training Your Attention Filter
-            </h2>
-            <p>
-              Your brain receives far more information every second than you could ever consciously process, so it filters — bringing certain things into awareness while letting the rest fade into the background. This is a well-documented feature of attention: what you've decided matters gets noticed; everything else tends to blend into the noise.
-            </p>
-            <p>
-              The practical implication: if you consistently focus on scarcity, obstacles, and what could go wrong, your attention will keep surfacing evidence for exactly that. If you deliberately and repeatedly direct your attention toward solutions, resources, and possibilities, you train yourself to notice openings you'd otherwise miss.
-            </p>
+          {/* LOCKED / UNLOCKED CHAPTERS */}
+          {isUnlocked ? (
+            /* ──────────────── UNLOCKED FULL CHAPTERS ──────────────── */
+            <>
+              {/* Chapter 1 */}
+              <div className="space-y-3 pt-4 border-t border-white/10">
+                <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
+                  🧠 Chapter 1: Training Your Attention Filter
+                </h2>
+                <p>
+                  Your brain receives far more information every second than you could ever consciously process, so it filters — bringing certain things into awareness while letting the rest fade into the background.
+                </p>
+                <p>
+                  The practical implication: if you consistently focus on scarcity, obstacles, and what could go wrong, your attention will keep surfacing evidence for exactly that. If you deliberately and repeatedly direct your attention toward solutions, resources, and possibilities, you train yourself to notice openings you'd otherwise miss.
+                </p>
+                <div className="bg-black/60 border border-white/10 p-4 rounded-xl text-xs text-amber-300 space-y-1">
+                  <p className="font-semibold text-white">💡 Try this:</p>
+                  <p>Each morning, name one specific category of opportunity you want your attention tuned to this week. Write it down.</p>
+                </div>
+              </div>
 
-            <div className="bg-black/60 border border-white/10 p-4 rounded-xl text-xs text-amber-300 space-y-1">
-              <p className="font-semibold text-white">💡 Try this:</p>
-              <p>Each morning, name one specific category of opportunity you want your attention tuned to this week (a client type, a skill, a kind of collaborator). Write it down. Notice at the end of the day what you actually paid attention to.</p>
+              {/* Chapter 2 */}
+              <div className="space-y-3">
+                <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
+                  🧬 Chapter 2: Feeling It in the Body, Not Just the Mind
+                </h2>
+                <p>
+                  Visualization works better when paired with an actual felt sense in the body: a settled breath, a genuine feeling of gratitude, and a relaxed posture. This pairing is called <strong>embodiment</strong>.
+                </p>
+                <ul className="list-disc list-inside space-y-2 text-slate-300">
+                  <li><strong>Emotion helps memory and motivation stick</strong>: States you actually feel are more memorable.</li>
+                  <li><strong>The heart's electrical signal is unusually strong</strong>: Physical techniques that calm and steady the heart have a real, measurable effect on your overall physiological state.</li>
+                </ul>
+              </div>
+
+              {/* Chapter 3 */}
+              <div className="space-y-3">
+                <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
+                  🌊 Chapter 3: Calming the Nervous System First
+                </h2>
+                <p>
+                  When you feel threatened, your body prioritizes short-term survival over long-term thinking.
+                </p>
+                <div className="bg-black/40 border border-white/10 p-4 rounded-xl space-y-2">
+                  <p className="font-semibold text-amber-300">Paced Breathing Protocol:</p>
+                  <p className="text-xs">Inhale for 4s, hold for 2s, exhale for 6s. Repeat for 30–60 seconds.</p>
+                </div>
+              </div>
+
+              {/* Chapter 4 & 5 */}
+              <div className="space-y-3">
+                <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
+                  🎯 Chapter 4 & 5: The One-Inch Action Principle & Daily Ritual
+                </h2>
+                <p>
+                  Ask: <em>"What is one small, concrete action I could take in the next 24 hours that moves this forward — even by an inch?"</em>
+                </p>
+                <div className="bg-amber-950/30 border border-amber-500/20 p-5 rounded-xl text-amber-200 space-y-2">
+                  <p>• <strong>Ground (30–60 sec)</strong>: Paced breathing.</p>
+                  <p>• <strong>Picture (60–90 sec)</strong>: Vivid image of a near-term goal.</p>
+                  <p>• <strong>Name (30 sec)</strong>: Category of opportunity for today.</p>
+                  <p>• <strong>Act (rest of day)</strong>: Complete your one-inch action.</p>
+                  <p>• <strong>Log (2 min, evening)</strong>: What did you do and notice?</p>
+                </div>
+              </div>
+
+              {/* Epilogue */}
+              <div className="text-center pt-6 border-t border-white/10 space-y-3">
+                <h3 className="text-lg font-bold text-amber-300">👑 Epilogue: What You Practice, You Become</h3>
+                <p className="text-xs md:text-sm max-w-xl mx-auto text-slate-400">
+                  Start today. Ground yourself, picture the goal, name your focus, and take the one-inch action in front of you.
+                </p>
+              </div>
+            </>
+          ) : (
+            /* ──────────────── LOCKED MONETIZATION BANNER ──────────────── */
+            <div className="relative mt-8 p-6 md:p-8 rounded-3xl bg-gradient-to-b from-amber-950/40 via-slate-900/90 to-[#0a0a16] border border-amber-500/40 shadow-2xl text-center space-y-6">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-600 flex items-center justify-center mx-auto shadow-lg shadow-amber-500/30">
+                <Lock className="w-7 h-7 text-black" />
+              </div>
+
+              <div className="space-y-2">
+                <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-mono font-bold uppercase tracking-wider border border-amber-500/30">
+                  UNLOCK CHAPTERS 1 – 5
+                </span>
+                <h3 className="text-xl md:text-2xl font-extrabold text-white">
+                  Ready to Master the Neuroscience of Manifestation?
+                </h3>
+                <p className="text-xs md:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                  Unlock the full 5-chapter master guide, learn the 1-inch daily ritual, and download the full manuscript to keep forever.
+                </p>
+              </div>
+
+              <div className="bg-black/50 border border-white/10 p-4 rounded-2xl max-w-sm mx-auto space-y-2 text-left text-xs text-slate-300">
+                <p className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>Full Chapters 1-5 + Daily 5-Min Ritual</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>Unlimited Markdown & PDF File Downloads</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>Lifetime Access & 1:1 Affirmation Vault</span>
+                </p>
+              </div>
+
+              <div className="pt-2 max-w-sm mx-auto space-y-3">
+                <p className="text-2xl font-extrabold text-amber-300">$19.99 USD</p>
+                <PayPalCheckoutButton
+                  product={PRODUCTS[1]}
+                  onSuccess={handlePaymentSuccess}
+                />
+                <p className="text-[10px] text-slate-400 flex items-center justify-center gap-1">
+                  <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                  Instant Automatic Unlock via PayPal Secure Checkout
+                </p>
+              </div>
             </div>
-          </div>
-
-          {/* Chapter 2 */}
-          <div className="space-y-3">
-            <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
-              🧬 Chapter 2: Feeling It in the Body, Not Just the Mind
-            </h2>
-            <p>
-              Visualization works better when paired with an actual felt sense in the body: a settled breath, a genuine feeling of gratitude, and a relaxed posture. This pairing is called <strong>embodiment</strong>.
-            </p>
-            <ul className="list-disc list-inside space-y-2 text-slate-300">
-              <li><strong>Emotion helps memory and motivation stick</strong>: States you actually feel — even briefly — tend to be more motivating and memorable than facts you merely think about.</li>
-              <li><strong>The heart's electrical signal is unusually strong</strong>: The heart generates a measurable electromagnetic field, larger than the brain's. Physical techniques that calm and steady the heart have a real, measurable effect on your overall physiological state, which affects how clearly you think and how calmly you act.</li>
-            </ul>
-
-            <div className="bg-black/60 border border-white/10 p-4 rounded-xl text-xs text-amber-300 space-y-1">
-              <p className="font-semibold text-white">💡 Try this:</p>
-              <p>Before visualizing a goal, spend 20 seconds simply slowing your breath and noticing one thing you're already grateful for today. Then picture the goal. The order matters — body first, image second.</p>
-            </div>
-          </div>
-
-          {/* Chapter 3 */}
-          <div className="space-y-3">
-            <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
-              🌊 Chapter 3: Calming the Nervous System First
-            </h2>
-            <p>
-              None of the above works well if your nervous system is in a stress response. When you feel threatened, your body prioritizes short-term survival over long-term thinking, creativity, or openness to new ideas.
-            </p>
-            <div className="bg-black/40 border border-white/10 p-4 rounded-xl space-y-2">
-              <p className="font-semibold text-amber-300">Paced Breathing Protocol:</p>
-              <p className="text-xs">Inhale for <strong>4 seconds</strong>, hold for <strong>2 seconds</strong>, exhale for <strong>6 seconds</strong>. Repeat for 30–60 seconds to activate your body's natural "rest and recover" response, which lowers physical tension and supports clearer thinking.</p>
-            </div>
-          </div>
-
-          {/* Chapter 4 */}
-          <div className="space-y-3">
-            <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
-              🎯 Chapter 4: The One-Inch Action Principle
-            </h2>
-            <p>
-              Clarity and calm are only useful if they lead somewhere. Waiting passively for a breakthrough is the part of older "manifestation" advice most worth leaving behind.
-            </p>
-            <p>
-              Instead: once you feel clear and calm, ask <em>"What is one small, concrete action I could take in the next 24 hours that moves this forward — even by an inch?"</em> Send the email. Make the call. Draft the outline. Ask the question.
-            </p>
-          </div>
-
-          {/* Chapter 5 */}
-          <div className="space-y-3">
-            <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
-              🔮 Chapter 5: A Simple Daily Ritual
-            </h2>
-            <div className="bg-amber-950/30 border border-amber-500/20 p-5 rounded-xl text-amber-200 space-y-2">
-              <p>• <strong>Ground (30–60 sec)</strong>: Paced breathing, optionally with your calming sound or tone.</p>
-              <p>• <strong>Picture (60–90 sec)</strong>: A specific, vivid image of a near-term goal, paired with genuine ease.</p>
-              <p>• <strong>Name (30 sec)</strong>: One category of opportunity you want your attention tuned to today.</p>
-              <p>• <strong>Act (rest of day)</strong>: Identify and complete your one-inch action.</p>
-              <p>• <strong>Log (2 min, evening)</strong>: What did you notice? What did you do? What are you grateful for?</p>
-              <p className="text-center font-bold text-white pt-2">"Five minutes at the start, two at the end. That's the whole ritual."</p>
-            </div>
-          </div>
-
-          {/* Epilogue */}
-          <div className="text-center pt-6 border-t border-white/10 space-y-3">
-            <h3 className="text-lg font-bold text-amber-300">👑 Epilogue: What You Practice, You Become</h3>
-            <p className="text-xs md:text-sm max-w-xl mx-auto text-slate-400">
-              Start today. Ground yourself, picture the goal, name your focus, and take the one-inch action in front of you.
-            </p>
-            <p className="text-xs text-slate-500">© 2026 CrystalMind AI. All rights reserved. Provided for educational and self-development purposes.</p>
-          </div>
+          )}
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-4 bg-black/60 border-t border-white/10 text-center">
+        <div className="px-6 py-4 bg-black/60 border-t border-white/10 flex items-center justify-between">
+          <span className="text-xs text-slate-400">
+            {isUnlocked ? '✅ Full Access Unlocked' : '🔒 Preview Mode (Prologue Only)'}
+          </span>
           <button
             onClick={onClose}
-            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-black font-extrabold text-sm"
+            className="px-6 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 font-semibold text-xs transition-all"
           >
             Close Reader
           </button>
