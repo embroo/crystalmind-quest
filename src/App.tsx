@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CONTENT } from './config/content';
 import { Crystal3DCanvas } from './components/Crystal3DCanvas';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { solfeggioAudio } from './lib/solfeggioAudio';
 import { generateSecretAffirmation, AffirmationResult } from './lib/geminiAffirmation';
 import PayPalCheckoutButton from './components/payment/PayPalCheckoutButton';
@@ -268,18 +269,20 @@ export default function App() {
             {content.hero.subtitle}
           </motion.p>
 
-          {/* 3D Crystal Canvas */}
+          {/* 3D Crystal Canvas wrapped in ErrorBoundary */}
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative"
           >
-            <Crystal3DCanvas
-              colorHex={getFreqColorHex(selectedFreqId)}
-              freqHz={parseInt(selectedFreq.hz)}
-              onCrystalTouch={handleCrystalTouch}
-            />
+            <ErrorBoundary>
+              <Crystal3DCanvas
+                colorHex={getFreqColorHex(selectedFreqId)}
+                freqHz={parseInt(selectedFreq.hz)}
+                onCrystalTouch={handleCrystalTouch}
+              />
+            </ErrorBoundary>
           </motion.div>
 
           {/* CTA Tune Button */}
