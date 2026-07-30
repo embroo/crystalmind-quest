@@ -1,13 +1,3 @@
-// ============================================================
-// AuthContext — Firebase Authentication React Context
-// ============================================================
-// 사용자 인증 상태를 앱 전체에서 관리하는 Context Provider
-//
-// 사용법:
-// 1. main.tsx에서 <AuthProvider>로 앱을 감싸기
-// 2. 컴포넌트에서 useAuth() 훅으로 사용자 정보 접근
-// ============================================================
-
 import {
   createContext,
   useContext,
@@ -28,15 +18,12 @@ import {
 import { auth } from '../lib/firebase';
 import { createUserProfile, getUserProfile, type UserProfile } from '../lib/firestore';
 
-// ── Context type ──
-
 interface AuthContextType {
   user: User | null;
   profile: UserProfile | null;
   loading: boolean;
   error: string | null;
 
-  // Auth methods
   signInWithGoogle: () => Promise<void>;
   signInWithApple: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
@@ -47,46 +34,53 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-// ── Provider component ──
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Listen to auth state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser);
+    try {
+      const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+        setUser(firebaseUser);
 
-      if (firebaseUser) {
-        // Fetch or create user profile in Firestore
-        try {
-          let userProfile = await getUserProfile(firebaseUser.uid);
-          if (!userProfile) {
-            await createUserProfile(firebaseUser.uid, {
-              email: firebaseUser.email,
-              displayName: firebaseUser.displayName,
-              photoURL: firebaseUser.photoURL,
-            });
-            userProfile = await getUserProfile(firebaseUser.uid);
+        if (firebaseUser) {
+          try {
+            let userProfile = await getUserProfile(firebaseUser.uid);
+            if (!userProfile) {
+              await createUserProfile(firebaseUser.uid, {
+                email: firebaseUser.email,
+                displayName: firebaseUser.displayName,
+                photoURL: firebaseUser.photoURL,
+              });
+              userProfile = await getUserProfile(firebaseUser.uid);
+            }
+            setProfile(userProfile);
+          } catch (err) {
+            console.error('Failed to fetch user profile:', err);
           }
-          setProfile(userProfile);
-        } catch (err) {
-          console.error('Failed to fetch user profile:', err);
+        } else {
+          setProfile(null);
         }
-      } else {
-        setProfile(null);
-      }
 
+        setLoading(false);
+      });
+
+      return () => unsubscribe();
+    } catch (err) {
+      console.warn('Firebase Auth state listener skipped:', err);
       setLoading(false);
-    });
-
-    return () => unsubscribe();
+    }
   }, []);
 
-  // ── Sign-in methods ──
+  const formatAuthError = (err: any) => {
+    const msg = err?.message || String(err);
+    if (msg.includes('api-key-not-valid') || msg.includes('YOUR_API_KEY')) {
+      return 'Notice: Firebase Auth key is not set. You can freely tune frequencies and complete PayPal purchases without signing in!';
+    }
+    return msg;
+  };
 
   const signInWithGoogle = async () => {
     try {
@@ -94,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
     } catch (err: any) {
-      setError(err.message || 'Google 로그인 실패');
+      setError(formatAuthError(err));
       throw err;
     }
   };
@@ -105,7 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const provider = new OAuthProvider('apple.com');
       await signInWithPopup(auth, provider);
     } catch (err: any) {
-      setError(err.message || 'Apple 로그인 실패');
+      setError(formatAuthError(err));
       throw err;
     }
   };
@@ -115,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setError(null);
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err: any) {
-      setError(err.message || '이메일 로그인 실패');
+      setError(formatAuthError(err));
       throw err;
     }
   };
@@ -125,7 +119,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setError(null);
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (err: any) {
-      setError(err.message || '회원가입 실패');
+      setError(formatAuthError(err));
       throw err;
     }
   };
@@ -134,7 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await firebaseSignOut(auth);
     } catch (err: any) {
-      setError(err.message || '로그아웃 실패');
+      setError(formatAuthError(err));
     }
   };
 
@@ -159,8 +153,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     </AuthContext.Provider>
   );
 }
-
-// ── Hook ──
 
 export function useAuth(): AuthContextType {
   const context = useContext(AuthContext);
