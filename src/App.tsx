@@ -20,6 +20,7 @@ export default function App() {
   const { user, signOut } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isEBookModalOpen, setIsEBookModalOpen] = useState(false);
+  const [isEBookUnlocked, setIsEBookUnlocked] = useState(false);
 
   // Audio State
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -170,9 +171,11 @@ export default function App() {
           paypalOrderId: orderId,
         });
         alert(`✅ Payment completed successfully! Order: ${orderId}\nYour E-Book Reader is opening.`);
+        setIsEBookUnlocked(true);
         setIsEBookModalOpen(true);
       } catch (err) {
         alert(`Payment completed. Order: ${orderId}`);
+        setIsEBookUnlocked(true);
         setIsEBookModalOpen(true);
       }
     },
@@ -603,7 +606,7 @@ export default function App() {
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
 
       {/* E-Book Reader Modal */}
-      <EBookModal isOpen={isEBookModalOpen} onClose={() => setIsEBookModalOpen(false)} />
+      <EBookModal isOpen={isEBookModalOpen} onClose={() => setIsEBookModalOpen(false)} isUnlocked={isEBookUnlocked} />
     </div>
   );
 }
