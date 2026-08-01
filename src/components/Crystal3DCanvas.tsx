@@ -41,14 +41,24 @@ export const Crystal3DCanvas: React.FC<Crystal3DCanvasProps> = ({
       const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
       camera.position.set(0, 0, 4.6);
 
-      // 2. WebGL Renderer with graceful mobile fallback
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+      // 2. WebGL Renderer with Android / Samsung Internet WebGL safety
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'default' });
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.9;
 
-      container.appendChild(renderer.domElement);
+      const domEl = renderer.domElement;
+
+      // WebGL Context Lost Handler for Samsung Galaxy & Android Mali/Adreno GPUs
+      const handleContextLost = (event: Event) => {
+        event.preventDefault();
+        console.warn('[Crystal3D] WebGL Context Lost on Android/Samsung GPU. Switching to 2D Fallback.');
+        setWebglError(true);
+      };
+      domEl.addEventListener('webglcontextlost', handleContextLost, false);
+
+      container.appendChild(domEl);
 
       // 3. GENERATE ENVIRONMENT MAP (Safe try/catch for mobile GPUs)
       let material: THREE.MeshPhysicalMaterial | THREE.MeshStandardMaterial;
@@ -216,7 +226,6 @@ export const Crystal3DCanvas: React.FC<Crystal3DCanvasProps> = ({
         isDragging = false;
       };
 
-      const domEl = renderer.domElement;
       domEl.addEventListener('mousedown', handlePointerDown);
       domEl.addEventListener('touchstart', handlePointerDown, { passive: true });
 
@@ -237,6 +246,7 @@ export const Crystal3DCanvas: React.FC<Crystal3DCanvasProps> = ({
 
       return () => {
         cancelAnimationFrame(animationFrameId);
+        domEl.removeEventListener('webglcontextlost', handleContextLost);
         domEl.removeEventListener('mousedown', handlePointerDown);
         domEl.removeEventListener('touchstart', handlePointerDown);
         window.removeEventListener('mousemove', handlePointerMove);
@@ -276,11 +286,12 @@ export const Crystal3DCanvas: React.FC<Crystal3DCanvasProps> = ({
         onClick={onCrystalTouch}
         className="relative w-full h-[320px] flex flex-col items-center justify-center cursor-pointer select-none"
       >
-        <div className="w-40 h-40 rounded-3xl bg-gradient-to-tr from-amber-400 via-yellow-500 to-amber-600 flex items-center justify-center shadow-2xl shadow-amber-500/40 animate-pulse border-4 border-amber-300/40">
-          <Sparkles className="w-20 h-20 text-black" />
+        <div className="w-36 h-36 rounded-3xl bg-gradient-to-tr from-amber-400 via-yellow-500 to-amber-600 flex items-center justify-center shadow-2xl shadow-amber-500/40 animate-pulse border-4 border-amber-300/40">
+          <img src="/crystalmind-icon-only.svg" alt="CrystalMind Emblem" className="w-20 h-20 drop-shadow-lg" />
         </div>
-        <div className="mt-4 text-xs font-semibold text-amber-200/80 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 shadow-lg">
-          💎 Tap Crystal to Activate 528Hz Sound Wave
+        <div className="mt-4 text-xs font-semibold text-amber-200/90 bg-black/70 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <span>Tap Crystal Emblem to Activate 528Hz Sound Wave</span>
         </div>
       </div>
     );
