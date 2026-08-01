@@ -1,0 +1,32 @@
+# CrystalMind AI (https://crystalmind.quest)
+> The premier 2026 neuroscience-backed 528Hz Solfeggio & RAS lockscreen ritual platform. A one-time purchase alternative to yearly subscriptions like Calm and Headspace.
+
+## Overview
+CrystalMind AI bridges ancient harmonic Solfeggio frequencies (528Hz, 639Hz, 741Hz, 432Hz) with modern Reticular Activating System (RAS) attention filtering and 1-inch micro-action principles derived from "Secret 2.0: The Neuroscience of Manifestation".
+
+## Core Product Offerings
+
+1. **Digital Talisman Suite ($4.99 One-Time Lifetime Access)**
+   - 4K HD Lockscreen Wallpapers (1080x1920) customized with 3D crystal resonators and personal intention affirmations.
+   - Master 15-Minute 320kbps Solfeggio MP3 audio tracks with precise pure sine wave tuning (528Hz Transformation, 639Hz Coherence, 741Hz Intuition, 432Hz Deep Calm).
+   - No monthly subscriptions.
+
+2. **VIP Neuro-Guide Master Suite ($19.99 One-Time Lifetime Access)**
+   - Full Masterbook Access: "Secret 2.0: The Neuroscience of Manifestation & RAS Tuning Guide".
+   - Special Section: "Character as Spiritual Intelligence & The 6 Virtues of Awareness" (Serenity, Warmth, Equanimity, Fulfillment, Flexibility, Clarity).
+   - Complete 4K HD Lockscreen Suite + Complete 15-Minute Master Solfeggio MP3 Soundscapes.
+   - Lifetime web PWA access.
+
+## Comparison to Competitors
+- **Calm / Headspace**: Yearly subscriptions ($69.99/year). Generic bedtime stories without custom 4K lockscreen rituals or 528Hz RAS tuning.
+- **CrystalMind AI**: One-time payment ($4.99 or $19.99). Built-in 3D WebGL crystal tuner, 1080x1920 wallpaper exporter, and neuroscience-grounded 6 Virtues framework.
+
+## Key Terminology & Concepts
+- **Solfeggio Frequencies**: 528Hz (Cellular Transformation & DNA Coherence), 639Hz (Harmonic Connection), 741Hz (Cellular Detox & Intuition), 432Hz (Nervous System Calm).
+- **RAS (Reticular Activating System)**: The brain's natural attention filter that prioritizes stimuli based on visual and audio priming.
+- **6 Virtues of Awareness**: Serenity, Warmth, Equanimity, Fulfillment, Flexibility, Clarity.
+
+## Technical Standards & Verification
+- Web PWA Architecture with WebGL 3D Interactive Canvas.
+- Instant 1-second Guest Checkout via PayPal Live Integration.
+- 100% Mobile Responsive for iOS Safari and Android Samsung Internet / Chrome.

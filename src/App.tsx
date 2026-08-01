@@ -10,6 +10,7 @@ import { AuthModal } from './components/AuthModal';
 import { EBookModal } from './components/EBookModal';
 import { TalismanModal } from './components/TalismanModal';
 import { ReviewsSection } from './components/ReviewsSection';
+import { AiFaqSection } from './components/AiFaqSection';
 import { useAuth } from './contexts/AuthContext';
 import { createOrder } from './lib/firestore';
 import { PRODUCTS } from './lib/paypal';
@@ -637,6 +638,9 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* ── AI CRAWLER FEEDING FAQ SECTION ── */}
+        <AiFaqSection />
       </main>
 
       {/* ── Footer ── */}
