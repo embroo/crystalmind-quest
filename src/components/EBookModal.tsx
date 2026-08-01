@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, BookOpen, Download, Sparkles, Lock, ShieldCheck, CheckCircle } from 'lucide-react';
+import { X, BookOpen, Download, Sparkles, Lock, ShieldCheck, CheckCircle, Music } from 'lucide-react';
 import PayPalCheckoutButton from './payment/PayPalCheckoutButton';
 import { PRODUCTS } from '../lib/paypal';
 
@@ -27,14 +27,21 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
 
   const handlePaymentSuccess = () => {
     setIsUnlocked(true);
-    alert('🎉 Thank you! The full Secret 2.0 Neuro-Guide is now unlocked!');
+    alert('🎉 Thank you! The VIP All-Access Secret 2.0 Master Suite (E-Book + 4K Wallpapers + 15-Min MP3 Audio) is now fully unlocked!');
   };
+
+  const audioSuite = [
+    { hz: '528Hz', name: 'Golden Citrine (17.0 min)', file: '/audio/CrystalMind_528Hz_Golden_Citrine_15Min_Master.mp3' },
+    { hz: '639Hz', name: 'Rose Quartz (14.1 min)', file: '/audio/CrystalMind_639Hz_Rose_Quartz_15Min_Master.mp3' },
+    { hz: '741Hz', name: 'Amethyst (11.0 min)', file: '/audio/CrystalMind_741Hz_Amethyst_15Min_Master.mp3' },
+    { hz: '432Hz', name: 'Teal Quartz (14.3 min)', file: '/audio/CrystalMind_432Hz_Teal_Quartz_15Min_Master.mp3' },
+  ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
-      <div className="relative w-full max-w-3xl max-h-[90vh] bg-[#0d0d1a] border border-amber-500/30 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-slate-100 font-sans">
+      <div className="relative w-full max-w-4xl max-h-[90vh] bg-[#0d0d1a] border border-amber-500/40 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-slate-100 font-sans">
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/40">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/50">
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-amber-400" />
             <h2 className="font-extrabold text-base md:text-lg text-amber-200">
@@ -67,21 +74,36 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
 
         {/* Modal Body */}
         <div className="p-6 md:p-8 overflow-y-auto space-y-8 text-sm md:text-base leading-relaxed text-slate-300 select-text">
-          {/* Title Banner */}
-          <div className="text-center space-y-3 border-b border-amber-500/20 pb-6">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-xs font-bold border border-amber-500/30">
-              <Sparkles className="w-3.5 h-3.5" />
-              OFFICIAL SECRET 2.0 WELLNESS GUIDE
-            </span>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-white">
-              Secret 2.0: The Neuroscience of Manifestation
-            </h1>
-            <p className="text-xs text-amber-300/80 font-mono">
-              A CrystalMind Wellness Guide to Rewiring Attention, Emotion, and Action
-            </p>
-            <p className="text-xs text-slate-400">
-              Publisher: CrystalMind AI Wellness Lab | Executive Producer: CEO Noh
-            </p>
+          {/* Title Banner with 3D Book Cover */}
+          <div className="flex flex-col md:flex-row items-center gap-6 border-b border-amber-500/20 pb-6">
+            <div className="w-44 md:w-52 shrink-0 relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border border-amber-500/40">
+              <img
+                src="/ebook_3d_cover.png"
+                alt="Secret 2.0 3D Book Cover"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="space-y-3 text-center md:text-left flex-1">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-xs font-bold border border-amber-500/30">
+                <Sparkles className="w-3.5 h-3.5" />
+                OFFICIAL $19.99 VIP ALL-ACCESS MASTER SUITE
+              </span>
+              <h1 className="text-2xl md:text-3xl font-extrabold text-white">
+                Secret 2.0: The Neuroscience of Manifestation
+              </h1>
+              <p className="text-xs text-amber-300/80 font-mono">
+                A CrystalMind Wellness Guide to Rewiring Attention, Emotion, and Action
+              </p>
+              <p className="text-xs text-slate-400">
+                Publisher: CrystalMind AI Wellness Lab | Executive Producer: CEO Noh
+              </p>
+              {isUnlocked && (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/40 mt-2">
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  VIP Full Access Unlocked (E-Book + 4K Wallpapers + 15-Min MP3 Audio)
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Note Before You Begin */}
@@ -94,7 +116,7 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
             <h3 className="font-bold text-amber-300 text-sm flex items-center justify-between">
               <span>📖 Table of Contents</span>
               {!isUnlocked && (
-                <span className="text-xs text-amber-400 font-normal">Prologue Free • Chapters 1-5 & Special Section Locked</span>
+                <span className="text-xs text-amber-400 font-normal">Prologue Free • Chapters 1-5 & VIP Bonus Audio Locked</span>
               )}
             </h3>
             <ul className="text-xs md:text-sm space-y-1.5 text-slate-300 list-disc list-inside">
@@ -119,8 +141,8 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
               <li className={isUnlocked ? 'text-amber-300 font-bold' : 'opacity-60'}>
                 <strong>Special Section</strong>: Character as Spiritual Intelligence & The 6 Virtues {!isUnlocked && '🔒'}
               </li>
-              <li className={isUnlocked ? '' : 'opacity-60'}>
-                <strong>Epilogue</strong>: What You Practice, You Become {!isUnlocked && '🔒'}
+              <li className={isUnlocked ? 'text-emerald-300 font-bold' : 'opacity-60'}>
+                <strong>VIP Bonus Suite</strong>: 4K Wallpapers + 4-Track 15-Min MP3 Audio Suite {!isUnlocked && '🔒'}
               </li>
             </ul>
           </div>
@@ -146,7 +168,7 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
 
           {/* LOCKED / UNLOCKED CHAPTERS */}
           {isUnlocked ? (
-            /* ──────────────── UNLOCKED FULL CHAPTERS ──────────────── */
+            /* ──────────────── UNLOCKED FULL CHAPTERS & VIP BONUS AUDIO ──────────────── */
             <>
               {/* Chapter 1 */}
               <div className="space-y-3 pt-4 border-t border-white/10">
@@ -155,9 +177,6 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
                 </h2>
                 <p>
                   Your brain receives far more information every second than you could ever consciously process, so it filters — bringing certain things into awareness while letting the rest fade into the background.
-                </p>
-                <p>
-                  The practical implication: if you consistently focus on scarcity, obstacles, and what could go wrong, your attention will keep surfacing evidence for exactly that.
                 </p>
               </div>
 
@@ -192,7 +211,6 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
                   <p>• <strong>Picture (60–90 sec)</strong>: Vivid image of a near-term goal.</p>
                   <p>• <strong>Name (30 sec)</strong>: Category of opportunity for today.</p>
                   <p>• <strong>Act (rest of day)</strong>: Complete your one-inch action.</p>
-                  <p>• <strong>Log (2 min, evening)</strong>: What did you do and notice?</p>
                 </div>
               </div>
 
@@ -207,34 +225,61 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
                 <div className="bg-black/60 border border-amber-500/30 p-4 rounded-xl text-amber-100 italic font-serif text-xs md:text-sm">
                   "Character is ultimately a matter of intelligence — not IQ, but Spiritual Intelligence (SQ): the operation of Pure Aware Presence that perceives reality exactly as it is without ego bias."
                 </div>
-                <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-                  Being trapped in one's own ego, unable to consider another's perspective, is not merely a personality flaw — it is a lack of Spiritual Intelligence. Awakening to your True Self (Pure Aware Presence) is not the final destination. True meaning is born when that awakening pulls forth the <strong>6 Virtues</strong> and blossoms into active daily wisdom:
-                </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                   <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
                     <p className="font-bold text-amber-300">1. Serenity (Detachment / 초연)</p>
-                    <p className="text-slate-300">The inner strength to self-master stress, anxiety, and mental noise from a still mind.</p>
+                    <p className="text-slate-300">Master stress and mental noise from a still mind.</p>
                   </div>
                   <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
                     <p className="font-bold text-amber-300">2. Warmth (Loving-Kindness / 따뜻)</p>
-                    <p className="text-slate-300">Perspective-taking (역지사지); the power to embrace others with genuine love and active listening.</p>
+                    <p className="text-slate-300">Perspective-taking (역지사지); embrace others with genuine love.</p>
                   </div>
                   <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
                     <p className="font-bold text-amber-300">3. Equanimity (Accepting Mind / 긍정)</p>
-                    <p className="text-slate-300">Somatic resilience (Kshanti); embracing challenging feedback with an upbeat spirit.</p>
+                    <p className="text-slate-300">Embrace challenging feedback with an upbeat spirit.</p>
                   </div>
                   <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
                     <p className="font-bold text-amber-300">4. Fulfillment (Plentiful Mind / 충만)</p>
-                    <p className="text-slate-300">Steadfast perseverance (Virya); advancing continuously, knowing nothing is lacking within.</p>
+                    <p className="text-slate-300">Steadfast perseverance, knowing nothing is lacking within.</p>
                   </div>
                   <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
                     <p className="font-bold text-amber-300">5. Flexibility (Open Virtue / 유연)</p>
-                    <p className="text-slate-300">Self-restraint and truthfulness; the wisdom to flexibly choose what is right and take responsibility.</p>
+                    <p className="text-slate-300">Choose what is right and hold yourself accountable.</p>
                   </div>
                   <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
                     <p className="font-bold text-amber-300">6. Clarity (Luminous Wisdom / 자명)</p>
-                    <p className="text-slate-300">Discerning wisdom (Prajna); perceiving reality and cause-and-effect with luminous clarity.</p>
+                    <p className="text-slate-300">Perceive reality and cause-and-effect with luminous clarity.</p>
                   </div>
+                </div>
+              </div>
+
+              {/* VIP BONUS SUITE: 15-MIN MP3 AUDIO FILES & 4K WALLPAPERS */}
+              <div className="space-y-4 pt-4 border-t border-emerald-500/30 bg-gradient-to-b from-emerald-950/30 to-black/50 p-6 rounded-2xl border border-emerald-500/30">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold uppercase border border-emerald-500/40">
+                    <Music className="w-3.5 h-3.5" />
+                    VIP INCLUDED BONUS: 15-MIN MP3 AUDIO SUITE
+                  </span>
+                  <span className="text-xs text-emerald-400 font-semibold">100% Free with $19.99 VIP Pass</span>
+                </div>
+                <h2 className="text-lg md:text-xl font-bold text-emerald-200">
+                  🎧 Download Your 4-Track 15-Minute Master Audio Files
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {audioSuite.map((track, i) => (
+                    <a
+                      key={i}
+                      href={track.file}
+                      download
+                      className="bg-black/60 hover:bg-black/80 border border-emerald-500/30 p-3.5 rounded-xl text-left flex items-center justify-between group transition-all"
+                    >
+                      <div className="space-y-0.5">
+                        <p className="text-xs font-mono font-bold text-emerald-300">{track.hz}</p>
+                        <p className="text-xs text-white font-medium">{track.name}</p>
+                      </div>
+                      <Download className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+                    </a>
+                  ))}
                 </div>
               </div>
 
@@ -255,13 +300,13 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
 
               <div className="space-y-2">
                 <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-mono font-bold uppercase tracking-wider border border-amber-500/30">
-                  UNLOCK CHAPTERS 1 – 5 & THE 6 VIRTUES
+                  UNLOCK ALL CHAPTERS + 6 VIRTUES + 15-MIN MP3 AUDIO SUITE
                 </span>
                 <h3 className="text-xl md:text-2xl font-extrabold text-white">
-                  Ready to Master the Neuroscience of Manifestation?
+                  Get VIP All-Access to the Neuroscience of Manifestation
                 </h3>
                 <p className="text-xs md:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                  Unlock the full 5-chapter master guide + Special Section: The 6 Virtues of Spiritual Intelligence, and download the full manuscript.
+                  Unlock the full 5-chapter master guide, The 6 Virtues Special Section, 4K Wallpapers, and the 15-Minute MP3 Master Audio Suite.
                 </p>
               </div>
 
@@ -271,12 +316,16 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
                   <span>Full Chapters 1-5 + The 6 Virtues Special Section</span>
                 </p>
                 <p className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>Unlimited Markdown & PDF File Downloads</span>
+                  <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span><strong>VIP INCLUDED</strong>: 15-Min MP3 Master Audio Suite 4종</span>
                 </p>
                 <p className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>Lifetime Access & 1:1 Affirmation Vault</span>
+                  <span><strong>VIP INCLUDED</strong>: 4K Lockscreen Wallpapers 4종</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>Markdown & PDF Guide File Downloads</span>
                 </p>
               </div>
 
@@ -298,7 +347,7 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
         {/* Modal Footer */}
         <div className="px-6 py-4 bg-black/60 border-t border-white/10 flex items-center justify-between">
           <span className="text-xs text-slate-400">
-            {isUnlocked ? '✅ Full Access Unlocked' : '🔒 Preview Mode (Prologue Only)'}
+            {isUnlocked ? '✅ VIP All-Access Unlocked (E-Book + 4K Wallpapers + 15-Min Audio)' : '🔒 Preview Mode (Prologue Only)'}
           </span>
           <button
             onClick={onClose}
