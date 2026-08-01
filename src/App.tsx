@@ -9,6 +9,7 @@ import PayPalCheckoutButton from './components/payment/PayPalCheckoutButton';
 import { AuthModal } from './components/AuthModal';
 import { EBookModal } from './components/EBookModal';
 import { TalismanModal } from './components/TalismanModal';
+import { ReviewsSection } from './components/ReviewsSection';
 import { useAuth } from './contexts/AuthContext';
 import { createOrder } from './lib/firestore';
 import { PRODUCTS } from './lib/paypal';
@@ -549,6 +550,9 @@ export default function App() {
             )}
           </AnimatePresence>
         </section>
+
+        {/* ── VERIFIED BUYER REVIEWS SECTION ── */}
+        <ReviewsSection />
 
         {/* ── SCREEN 3: Global PayPal Checkout ── */}
         <section className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 text-center backdrop-blur-md">
