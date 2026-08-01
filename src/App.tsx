@@ -288,6 +288,31 @@ export default function App() {
             </ErrorBoundary>
           </motion.div>
 
+          {/* ── 40-SEC SOLFEGGIO RITUAL YOUTUBE TEASER ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.35 }}
+            className="bg-black/60 border border-amber-500/30 rounded-3xl p-4 md:p-6 shadow-2xl backdrop-blur-xl max-w-2xl mx-auto space-y-3"
+          >
+            <div className="flex items-center justify-between px-2">
+              <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-amber-300 uppercase">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                40-Second Mindful Ritual Teaser
+              </span>
+              <span className="text-[10px] text-slate-400 font-mono">528Hz • 639Hz • 741Hz • 432Hz</span>
+            </div>
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-inner bg-black">
+              <iframe
+                src="https://www.youtube.com/embed/2YWQ3f_0VcQ?rel=0&autoplay=0"
+                title="CrystalMind AI 40-Sec Ritual Teaser"
+                className="absolute inset-0 w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </motion.div>
+
           {/* CTA Tune Button */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}

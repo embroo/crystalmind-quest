@@ -86,7 +86,7 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
 
           {/* Note Before You Begin */}
           <div className="bg-amber-950/30 border border-amber-500/30 p-4 rounded-2xl text-xs text-amber-100/90 leading-relaxed">
-            <strong>📌 A Note Before You Begin:</strong> This guide is an educational and self-development resource. It draws on general, publicly understood concepts from neuroscience and psychology — attention filtering, stress physiology, and habit formation — and applies them to goal-setting and personal growth practices. It is not medical advice, is not a treatment for any condition, and is not a guarantee of any financial, health, or life outcome.
+            <strong>📌 A Note Before You Begin:</strong> This guide is an educational and self-development resource. It draws on general, publicly understood concepts from neuroscience and psychology — attention filtering, stress physiology, and habit formation — and applies them to goal-setting and personal growth practices.
           </div>
 
           {/* Table of Contents */}
@@ -94,7 +94,7 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
             <h3 className="font-bold text-amber-300 text-sm flex items-center justify-between">
               <span>📖 Table of Contents</span>
               {!isUnlocked && (
-                <span className="text-xs text-amber-400 font-normal">Prologue Free • Chapters 1-5 Locked</span>
+                <span className="text-xs text-amber-400 font-normal">Prologue Free • Chapters 1-5 & Special Section Locked</span>
               )}
             </h3>
             <ul className="text-xs md:text-sm space-y-1.5 text-slate-300 list-disc list-inside">
@@ -115,6 +115,9 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
               </li>
               <li className={isUnlocked ? '' : 'opacity-60'}>
                 <strong>Chapter 5</strong>: A Simple Daily Ritual {!isUnlocked && '🔒'}
+              </li>
+              <li className={isUnlocked ? 'text-amber-300 font-bold' : 'opacity-60'}>
+                <strong>Special Section</strong>: Character as Spiritual Intelligence & The 6 Virtues {!isUnlocked && '🔒'}
               </li>
               <li className={isUnlocked ? '' : 'opacity-60'}>
                 <strong>Epilogue</strong>: What You Practice, You Become {!isUnlocked && '🔒'}
@@ -137,7 +140,7 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
               When that gap feels urgent or desperate, your nervous system tends to focus on protecting you from disappointment rather than noticing new opportunities.
             </p>
             <p className="font-bold text-white">
-              This guide takes a different starting point: changing your attention filter, your somatic feeling, and your next 1-inch action. These are not mystical claims — they're practical habits grounded in how attention, emotion, and behavior actually work together.
+              This guide takes a different starting point: changing your attention filter, your somatic feeling, and your next 1-inch action.
             </p>
           </div>
 
@@ -154,12 +157,8 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
                   Your brain receives far more information every second than you could ever consciously process, so it filters — bringing certain things into awareness while letting the rest fade into the background.
                 </p>
                 <p>
-                  The practical implication: if you consistently focus on scarcity, obstacles, and what could go wrong, your attention will keep surfacing evidence for exactly that. If you deliberately and repeatedly direct your attention toward solutions, resources, and possibilities, you train yourself to notice openings you'd otherwise miss.
+                  The practical implication: if you consistently focus on scarcity, obstacles, and what could go wrong, your attention will keep surfacing evidence for exactly that.
                 </p>
-                <div className="bg-black/60 border border-white/10 p-4 rounded-xl text-xs text-amber-300 space-y-1">
-                  <p className="font-semibold text-white">💡 Try this:</p>
-                  <p>Each morning, name one specific category of opportunity you want your attention tuned to this week. Write it down.</p>
-                </div>
               </div>
 
               {/* Chapter 2 */}
@@ -170,10 +169,6 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
                 <p>
                   Visualization works better when paired with an actual felt sense in the body: a settled breath, a genuine feeling of gratitude, and a relaxed posture. This pairing is called <strong>embodiment</strong>.
                 </p>
-                <ul className="list-disc list-inside space-y-2 text-slate-300">
-                  <li><strong>Emotion helps memory and motivation stick</strong>: States you actually feel are more memorable.</li>
-                  <li><strong>The heart's electrical signal is unusually strong</strong>: Physical techniques that calm and steady the heart have a real, measurable effect on your overall physiological state.</li>
-                </ul>
               </div>
 
               {/* Chapter 3 */}
@@ -181,9 +176,6 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
                 <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
                   🌊 Chapter 3: Calming the Nervous System First
                 </h2>
-                <p>
-                  When you feel threatened, your body prioritizes short-term survival over long-term thinking.
-                </p>
                 <div className="bg-black/40 border border-white/10 p-4 rounded-xl space-y-2">
                   <p className="font-semibold text-amber-300">Paced Breathing Protocol:</p>
                   <p className="text-xs">Inhale for 4s, hold for 2s, exhale for 6s. Repeat for 30–60 seconds.</p>
@@ -195,15 +187,54 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
                 <h2 className="text-xl font-bold text-amber-200 border-l-4 border-amber-500 pl-3">
                   🎯 Chapter 4 & 5: The One-Inch Action Principle & Daily Ritual
                 </h2>
-                <p>
-                  Ask: <em>"What is one small, concrete action I could take in the next 24 hours that moves this forward — even by an inch?"</em>
-                </p>
                 <div className="bg-amber-950/30 border border-amber-500/20 p-5 rounded-xl text-amber-200 space-y-2">
                   <p>• <strong>Ground (30–60 sec)</strong>: Paced breathing.</p>
                   <p>• <strong>Picture (60–90 sec)</strong>: Vivid image of a near-term goal.</p>
                   <p>• <strong>Name (30 sec)</strong>: Category of opportunity for today.</p>
                   <p>• <strong>Act (rest of day)</strong>: Complete your one-inch action.</p>
                   <p>• <strong>Log (2 min, evening)</strong>: What did you do and notice?</p>
+                </div>
+              </div>
+
+              {/* SPECIAL SECTION: THE 6 VIRTUES OF AWARENESS */}
+              <div className="space-y-4 pt-4 border-t border-amber-500/30 bg-gradient-to-b from-amber-950/30 to-black/40 p-6 rounded-2xl border border-amber-500/20">
+                <span className="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-mono font-bold uppercase border border-amber-500/40">
+                  💎 SPECIAL SECTION
+                </span>
+                <h2 className="text-xl md:text-2xl font-extrabold text-amber-200">
+                  Character as Spiritual Intelligence & The 6 Virtues of Awareness
+                </h2>
+                <div className="bg-black/60 border border-amber-500/30 p-4 rounded-xl text-amber-100 italic font-serif text-xs md:text-sm">
+                  "Character is ultimately a matter of intelligence — not IQ, but Spiritual Intelligence (SQ): the operation of Pure Aware Presence that perceives reality exactly as it is without ego bias."
+                </div>
+                <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+                  Being trapped in one's own ego, unable to consider another's perspective, is not merely a personality flaw — it is a lack of Spiritual Intelligence. Awakening to your True Self (Pure Aware Presence) is not the final destination. True meaning is born when that awakening pulls forth the <strong>6 Virtues</strong> and blossoms into active daily wisdom:
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                  <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
+                    <p className="font-bold text-amber-300">1. Serenity (Detachment / 초연)</p>
+                    <p className="text-slate-300">The inner strength to self-master stress, anxiety, and mental noise from a still mind.</p>
+                  </div>
+                  <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
+                    <p className="font-bold text-amber-300">2. Warmth (Loving-Kindness / 따뜻)</p>
+                    <p className="text-slate-300">Perspective-taking (역지사지); the power to embrace others with genuine love and active listening.</p>
+                  </div>
+                  <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
+                    <p className="font-bold text-amber-300">3. Equanimity (Accepting Mind / 긍정)</p>
+                    <p className="text-slate-300">Somatic resilience (Kshanti); embracing challenging feedback with an upbeat spirit.</p>
+                  </div>
+                  <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
+                    <p className="font-bold text-amber-300">4. Fulfillment (Plentiful Mind / 충만)</p>
+                    <p className="text-slate-300">Steadfast perseverance (Virya); advancing continuously, knowing nothing is lacking within.</p>
+                  </div>
+                  <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
+                    <p className="font-bold text-amber-300">5. Flexibility (Open Virtue / 유연)</p>
+                    <p className="text-slate-300">Self-restraint and truthfulness; the wisdom to flexibly choose what is right and take responsibility.</p>
+                  </div>
+                  <div className="bg-black/50 p-3 rounded-xl border border-white/10 space-y-1">
+                    <p className="font-bold text-amber-300">6. Clarity (Luminous Wisdom / 자명)</p>
+                    <p className="text-slate-300">Discerning wisdom (Prajna); perceiving reality and cause-and-effect with luminous clarity.</p>
+                  </div>
                 </div>
               </div>
 
@@ -224,20 +255,20 @@ export const EBookModal: React.FC<EBookModalProps> = ({ isOpen, onClose, isUnloc
 
               <div className="space-y-2">
                 <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-mono font-bold uppercase tracking-wider border border-amber-500/30">
-                  UNLOCK CHAPTERS 1 – 5
+                  UNLOCK CHAPTERS 1 – 5 & THE 6 VIRTUES
                 </span>
                 <h3 className="text-xl md:text-2xl font-extrabold text-white">
                   Ready to Master the Neuroscience of Manifestation?
                 </h3>
                 <p className="text-xs md:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                  Unlock the full 5-chapter master guide, learn the 1-inch daily ritual, and download the full manuscript to keep forever.
+                  Unlock the full 5-chapter master guide + Special Section: The 6 Virtues of Spiritual Intelligence, and download the full manuscript.
                 </p>
               </div>
 
               <div className="bg-black/50 border border-white/10 p-4 rounded-2xl max-w-sm mx-auto space-y-2 text-left text-xs text-slate-300">
                 <p className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>Full Chapters 1-5 + Daily 5-Min Ritual</span>
+                  <span>Full Chapters 1-5 + The 6 Virtues Special Section</span>
                 </p>
                 <p className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
