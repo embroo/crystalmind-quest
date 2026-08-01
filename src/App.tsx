@@ -8,10 +8,11 @@ import { generateSecretAffirmation, AffirmationResult } from './lib/geminiAffirm
 import PayPalCheckoutButton from './components/payment/PayPalCheckoutButton';
 import { AuthModal } from './components/AuthModal';
 import { EBookModal } from './components/EBookModal';
+import { TalismanModal } from './components/TalismanModal';
 import { useAuth } from './contexts/AuthContext';
 import { createOrder } from './lib/firestore';
 import { PRODUCTS } from './lib/paypal';
-import { Sparkles, Volume2, VolumeX, Smartphone, CheckCircle, Zap, User, BookOpen, Download } from 'lucide-react';
+import { Sparkles, Volume2, VolumeX, Smartphone, CheckCircle, Zap, User, BookOpen, Download, Image as ImageIcon } from 'lucide-react';
 
 export default function App() {
   const content = CONTENT['en'];
@@ -21,6 +22,9 @@ export default function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isEBookModalOpen, setIsEBookModalOpen] = useState(false);
   const [isEBookUnlocked, setIsEBookUnlocked] = useState(false);
+
+  // $4.99 Talisman Suite Modal State
+  const [isTalismanModalOpen, setIsTalismanModalOpen] = useState(false);
 
   // Audio State
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -170,13 +174,21 @@ export default function App() {
           status: 'completed',
           paypalOrderId: orderId,
         });
-        alert(`✅ Payment completed successfully! Order: ${orderId}\nYour E-Book Reader is opening.`);
-        setIsEBookUnlocked(true);
-        setIsEBookModalOpen(true);
+        alert(`✅ Payment completed successfully! Order: ${orderId}`);
+        if (productId === 'digital-talisman') {
+          setIsTalismanModalOpen(true);
+        } else {
+          setIsEBookUnlocked(true);
+          setIsEBookModalOpen(true);
+        }
       } catch (err) {
         alert(`Payment completed. Order: ${orderId}`);
-        setIsEBookUnlocked(true);
-        setIsEBookModalOpen(true);
+        if (productId === 'digital-talisman') {
+          setIsTalismanModalOpen(true);
+        } else {
+          setIsEBookUnlocked(true);
+          setIsEBookModalOpen(true);
+        }
       }
     },
     [user]
@@ -563,7 +575,7 @@ export default function App() {
                   {content.monetization.digitalTalismanPrice}
                 </p>
               </div>
-              <div className="pt-4 border-t border-white/10">
+              <div className="pt-4 border-t border-white/10 space-y-2">
                 <PayPalCheckoutButton
                   product={PRODUCTS[0]}
                   onSuccess={(details) =>
@@ -575,6 +587,13 @@ export default function App() {
                     )
                   }
                 />
+                <button
+                  onClick={() => setIsTalismanModalOpen(true)}
+                  className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
+                  ✨ Preview 4K Talisman Suite Example ($4.99 Unlocked View)
+                </button>
               </div>
             </div>
 
@@ -632,6 +651,9 @@ export default function App() {
 
       {/* E-Book Reader Modal */}
       <EBookModal isOpen={isEBookModalOpen} onClose={() => setIsEBookModalOpen(false)} isUnlocked={isEBookUnlocked} />
+
+      {/* $4.99 Talisman Suite Modal */}
+      <TalismanModal isOpen={isTalismanModalOpen} onClose={() => setIsTalismanModalOpen(false)} customerName="Sarah Jenkins" />
     </div>
   );
 }
