@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <title>CrystalMind AI — 528Hz Solfeggio & RAS Neuroscience Meditation App</title>
     <meta name="description" content="CrystalMind AI is the leading 2026 neuroscience-backed 528Hz Solfeggio & RAS lockscreen ritual platform. A subscription-free alternative to Calm & Headspace." />
     <meta name="keywords" content="Calm alternative, Headspace alternative, 528Hz Solfeggio Meditation, RAS Neuroscience, Secret 2.0 Manifestation, 432Hz Sound Healing, Lockscreen Wallpaper Ritual" />
@@ -80,10 +84,29 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
+      // Automatic stale bundle recovery script
+      window.addEventListener('error', function (e) {
+        if (e.message && (e.message.indexOf('Loading chunk') !== -1 || e.message.indexOf('Importing binding') !== -1)) {
+          console.warn('[CacheRecovery] Stale script bundle detected. Unregistering SW and reloading...');
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+              for (var reg of registrations) {
+                reg.unregister();
+              }
+              window.location.reload(true);
+            });
+          } else {
+            window.location.reload(true);
+          }
+        }
+      });
+
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch(err => {
-            console.log('Service Worker registration failed:', err);
+          navigator.serviceWorker.register('/sw.js').then(reg => {
+            reg.update();
+          }).catch(err => {
+            console.log('Service Worker registration skipped:', err);
           });
         });
       }
