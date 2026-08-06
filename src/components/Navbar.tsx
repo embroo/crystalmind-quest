@@ -5,6 +5,7 @@ import { SquashHamburger } from './SquashHamburger';
 import { ScrambleText } from './ScrambleText';
 import { AuthModal } from './AuthModal';
 import { useAuth } from '../contexts/AuthContext';
+import { ShareButton } from './ShareButton';
 
 interface NavbarProps {
   entranceComplete: boolean;
@@ -141,6 +142,9 @@ export function Navbar({ entranceComplete }: NavbarProps) {
               </motion.button>
             )}
 
+            {/* Share button */}
+            <ShareButton />
+
             {/* Download button */}
             <motion.button
               className="h-12 px-6 bg-white rounded-full flex items-center gap-2.5 cursor-pointer border-none"
@@ -246,6 +250,9 @@ export function Navbar({ entranceComplete }: NavbarProps) {
                 Sign In
               </motion.button>
             )}
+
+            {/* Share button */}
+            <ShareButton isMobile />
 
             {/* Download button */}
             <motion.button

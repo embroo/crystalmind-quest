@@ -51,8 +51,18 @@ export default function App() {
       e.preventDefault();
       setDeferredPrompt(e);
     };
+    
+    const handleAutoStop = () => {
+      setIsAudioPlaying(false);
+    };
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('solfeggio-auto-stop', handleAutoStop);
+    
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('solfeggio-auto-stop', handleAutoStop);
+    };
   }, []);
 
   const handleInstallPWA = () => {
@@ -117,7 +127,7 @@ export default function App() {
     solfeggioAudio.triggerHaptic(40);
 
     const freqHz = parseInt(freqHzStr);
-    solfeggioAudio.startFrequency(freqHz, 0.15);
+    solfeggioAudio.startFrequency(freqHz);
     setIsAudioPlaying(true);
   };
 
@@ -126,7 +136,7 @@ export default function App() {
     solfeggioAudio.triggerHaptic([50, 100, 50, 100]);
 
     const freqHz = parseInt(selectedFreq.hz);
-    solfeggioAudio.startFrequency(freqHz, 0.18);
+    solfeggioAudio.playForDuration(freqHz, 0.5, 10000);
     setIsAudioPlaying(true);
 
     const result = await generateSecretAffirmation(selectedFreqId, userWish, 'en');
