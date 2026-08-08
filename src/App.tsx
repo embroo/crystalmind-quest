@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CONTENT } from './config/content';
-import { Crystal3DCanvas } from './components/Crystal3DCanvas';
-import { ErrorBoundary } from './components/ErrorBoundary';
 import { solfeggioAudio } from './lib/solfeggioAudio';
 import { generateSecretAffirmation, AffirmationResult } from './lib/geminiAffirmation';
 import PayPalCheckoutButton from './components/payment/PayPalCheckoutButton';
@@ -27,6 +25,9 @@ export default function App() {
 
   // $4.99 Talisman Suite Modal State
   const [isTalismanModalOpen, setIsTalismanModalOpen] = useState(false);
+
+  // Video Player State
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
 
   // Audio State
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -104,14 +105,6 @@ export default function App() {
     const freqHz = parseInt(selectedFreq.hz);
     const newState = solfeggioAudio.toggleFrequency(freqHz);
     setIsAudioPlaying(newState);
-  };
-
-  // 3D Crystal Touch Callback
-  const handleCrystalTouch = () => {
-    solfeggioAudio.triggerHaptic([30, 40, 30]);
-    const freqHz = parseInt(selectedFreq.hz);
-    solfeggioAudio.startFrequency(freqHz, 0.15);
-    setIsAudioPlaying(true);
   };
 
   // Frequency Card Click Callback
@@ -262,94 +255,91 @@ export default function App() {
 
       {/* ── Main Content Container ── */}
       <main className="pt-24 pb-20 px-4 max-w-4xl mx-auto space-y-16">
-        {/* ── SCREEN 1: Hero Visualizer ── */}
-        <section className="text-center space-y-6 pt-4">
+        {/* ── SCREEN 1: Hero Visualizer (Video at Top, Text Below) ── */}
+        <section className="text-center space-y-8 pt-4">
+          {/* Top Video Player */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold tracking-wider uppercase"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="relative w-full aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-black group"
           >
-            <Zap className="w-3.5 h-3.5" />
-            {content.hero.badge}
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight"
-          >
-            {content.hero.titleFirst}{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500">
-              {content.hero.titleHighlight}
-            </span>{' '}
-            {content.hero.titleSecond}
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-base md:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed"
-          >
-            {content.hero.subtitle}
-          </motion.p>
-
-          {/* 3D Crystal Canvas wrapped in ErrorBoundary */}
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative"
-          >
-            <ErrorBoundary>
-              <Crystal3DCanvas
-                colorHex={getFreqColorHex(selectedFreqId)}
-                freqHz={parseInt(selectedFreq.hz)}
-                onCrystalTouch={handleCrystalTouch}
-              />
-            </ErrorBoundary>
-          </motion.div>
-
-          {/* ── 40-SEC SOLFEGGIO RITUAL YOUTUBE TEASER ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.35 }}
-            className="bg-black/60 border border-amber-500/30 rounded-3xl p-4 md:p-6 shadow-2xl backdrop-blur-xl max-w-2xl mx-auto space-y-3"
-          >
-            <div className="flex items-center justify-between px-2">
-              <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-amber-300 uppercase">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                40-Second Mindful Ritual Teaser
-              </span>
-              <span className="text-[10px] text-slate-400 font-mono">528Hz • 639Hz • 741Hz • 432Hz</span>
-            </div>
-            <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-inner bg-black">
-              <iframe
-                src="https://www.youtube.com/embed/2YWQ3f_0VcQ?rel=0&autoplay=0"
-                title="CrystalMind AI 40-Sec Ritual Teaser"
-                className="absolute inset-0 w-full h-full border-0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </motion.div>
-
-          {/* CTA Tune Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
+            <video
+              autoPlay
+              muted={isVideoMuted}
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+              src="/hero_background.mp4"
+            />
+            
+            {/* Unmute/Mute Overlay Button */}
             <button
-              onClick={() => tunerRef.current?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-base md:text-lg shadow-xl shadow-amber-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 inline-flex items-center gap-2"
+              onClick={() => setIsVideoMuted(!isVideoMuted)}
+              className="absolute bottom-4 right-4 z-10 px-4 py-2 rounded-full bg-black/60 hover:bg-black/80 border border-white/20 backdrop-blur-md text-slate-200 text-xs font-bold tracking-wider uppercase flex items-center gap-2 transition-all opacity-80 hover:opacity-100 shadow-lg"
             >
-              {content.hero.ctaButton}
+              {isVideoMuted ? (
+                <>
+                  <VolumeX className="w-4 h-4 text-slate-300" />
+                  Tap to Unmute
+                </>
+              ) : (
+                <>
+                  <Volume2 className="w-4 h-4 text-amber-400 animate-pulse" />
+                  Sound On
+                </>
+              )}
             </button>
           </motion.div>
+
+          {/* Text Content */}
+          <div className="space-y-6 pt-4">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold tracking-wider uppercase"
+            >
+              <Zap className="w-3.5 h-3.5" />
+              {content.hero.badge}
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight"
+            >
+              {content.hero.titleFirst}{' '}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500">
+                {content.hero.titleHighlight}
+              </span>{' '}
+              {content.hero.titleSecond}
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="text-base md:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed"
+            >
+              {content.hero.subtitle}
+            </motion.p>
+
+            {/* CTA Tune Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <button
+                onClick={() => tunerRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-base md:text-lg shadow-xl shadow-amber-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 inline-flex items-center gap-2"
+              >
+                {content.hero.ctaButton}
+              </button>
+            </motion.div>
+          </div>
         </section>
 
         {/* ── SCREEN 2: Interactive Secret Tuner ── */}
