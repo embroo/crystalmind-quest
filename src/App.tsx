@@ -85,21 +85,6 @@ export default function App() {
   const selectedFreq =
     content.tuner.frequencies.find((f) => f.id === selectedFreqId) || content.tuner.frequencies[0];
 
-  const getFreqColorHex = (id: string) => {
-    switch (id) {
-      case 'wealth':
-        return 0xffd700;
-      case 'love':
-        return 0xff69b4;
-      case 'clarity':
-        return 0x9370db;
-      case 'peace':
-        return 0x00bfff;
-      default:
-        return 0xffd700;
-    }
-  };
-
   // Top Nav Audio Toggle Button
   const handleAudioToggle = () => {
     const freqHz = parseInt(selectedFreq.hz);
